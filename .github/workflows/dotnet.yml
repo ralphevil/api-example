@@ -45,7 +45,8 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
         .\.sonar\scanner\dotnet-sonarscanner begin /k:"ralphevil_api-example" /o:"ralphevil" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-        .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+        dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover -l trx
+        .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
     
     - name: Build
       run: dotnet build --configuration Release --no-restore
